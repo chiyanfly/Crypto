@@ -1,6 +1,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
 
 /*
  * 
@@ -32,16 +34,20 @@ char * encipher(char character){
                     j++;
                 }
                 else {
-                    if(i == 1)
-                        return checkerboard[0][j];
-                    else{
+		  if(i == 1){
+		      char* result = (char*) malloc(sizeof(char)+1);
+		      result[0]=checkerboard[0][j];
+		      result[1]='\0';
+		      return result;
+		  }
+		  else{
                         char* result = (char*) malloc(2*sizeof(char)+1);
                         result[0]=checkerboard[i][0];
                         result[1]=checkerboard[0][j];
                         result[2]='\0';
                         return result;
-                    }
-                 } 
+                  }
+                } 
                 
             }
              
@@ -50,13 +56,38 @@ char * encipher(char character){
     }
 }
 
+char * divide(char * plaintext){
+  
+  int divide_position=  rand()%strlen(plaintext);
+  // printf("%d\n",divise_position);
+  char * str_first= (char*) malloc(strlen(plaintext)-divide_position+1);
+  // printf("%d\n",strlen(plaintext));
+  char * str_second=(char*) malloc(divide_position+1);
+  for(int i =0; i<strlen(plaintext);i++){
+    if(i>=divide_position)
+          str_first[i-divide_position] = plaintext[i]; 
+    else
+       str_second[i] = plaintext[i]; 
+
+  }
+  char * result = (char*) malloc(strlen(str_first) + strlen(str_second) + 1);
+  // printf("%s\n",str_second);
+  // printf("%s\n",str_first);
+  strncpy(result, str_first, strlen(str_first));
+  strncat(result, str_second, strlen(str_second)+1);
+  printf("%s\n",result);
+  return result;
+}
+
+
 
 
 
 int main(int argc, char** argv) {
-    char* res = encipher('&');
-    printf("%s",res);
-
-    return (EXIT_SUCCESS);
+  // char* res = encipher('&');
+  // printf("%s",res);
+  char * text = "ABCDEFGHIJKIOPOUOGDSSgslkdgksjjfS";
+  divide(text);
+   return (EXIT_SUCCESS);
 }
 
